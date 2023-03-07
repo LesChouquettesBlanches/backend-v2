@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import { Request, Response } from 'express'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
@@ -49,11 +50,11 @@ const signup = (req: Request, res: Response) => {
 }
 
 const login = (req: Request, res: Response) => {
-  const login = isEmail(req.body.login)
+  const username = isEmail(req.body.login)
     ? { email: req.body.login }
     : { login: req.body.login }
 
-  User.findOne(login)
+  User.findOne(username)
     .then((user) => {
       if (!user) {
         res.status(401).json({ error: 'Identifiants incorrects !' })

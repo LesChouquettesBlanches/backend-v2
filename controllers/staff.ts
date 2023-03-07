@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-underscore-dangle */
 import { Request, Response } from 'express'
 import { uploadToStore, deleteFromStore } from '../clients/google/storage'
 import processFile from '../middlewares/upload'

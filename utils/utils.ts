@@ -1,20 +1,22 @@
 /* eslint-disable no-plusplus */
 import diff from 'deep-diff'
 import dateFormat from 'date-fns/format'
-import { getHours, getMinutes, compareAsc } from 'date-fns'
 import frLocale from 'date-fns/locale/fr'
+import { getHours, getMinutes, compareAsc } from 'date-fns'
 import User from '../models/user'
 import Booker from '../models/booker'
 import Staff from '../models/staff'
 
-async function isAdmin(userId) {
+export { dateFormat, frLocale }
+
+export async function isAdmin(userId) {
   const result = await User.findById(userId)
   const user = result.toObject()
 
   return user.roles.includes('administrator')
 }
 
-async function getAdminData(user) {
+export async function getAdminData(user) {
   const booker = await Booker.findOne({ user }).then((data) => {
     let response = {}
     if (data) {
@@ -35,7 +37,6 @@ async function getAdminData(user) {
         languages: data.languages,
         clothesSize: data.clothesSize,
         vehicle: data.vehicle,
-        bookerName: data.bookerName,
         picture: data.picture,
         documents: data.documents,
         gender: data.gender,
@@ -48,7 +49,7 @@ async function getAdminData(user) {
   return response
 }
 
-async function getBookerData(user) {
+export async function getBookerData(user) {
   const booker = await Booker.findOne({ user }).then((data) => {
     let response = {}
     if (data) {
@@ -63,7 +64,7 @@ async function getBookerData(user) {
   return booker
 }
 
-async function getStaffData(user) {
+export async function getStaffData(user) {
   const staff = await Staff.findOne({ user }).then((data) => {
     let response = {}
     if (data) {
@@ -73,7 +74,6 @@ async function getStaffData(user) {
         languages: data.languages,
         clothesSize: data.clothesSize,
         vehicle: data.vehicle,
-        bookerName: data.bookerName,
         picture: data.picture,
         documents: data.documents,
         gender: data.gender,
@@ -85,7 +85,7 @@ async function getStaffData(user) {
   return staff
 }
 
-function formatBookerData(booker) {
+export function formatBookerData(booker) {
   let format = {}
   if (booker) {
     format = {
@@ -97,7 +97,7 @@ function formatBookerData(booker) {
   return format
 }
 
-function formatStaffData(staff) {
+export function formatStaffData(staff) {
   let format = {}
   if (staff) {
     format = {
@@ -106,7 +106,6 @@ function formatStaffData(staff) {
       languages: staff.languages,
       clothesSize: staff.clothesSize,
       vehicle: staff.vehicle,
-      bookerName: staff.bookerName,
       picture: staff.picture,
       documents: staff.documents,
       gender: staff.gender,
@@ -116,16 +115,16 @@ function formatStaffData(staff) {
   return format
 }
 
-function isEmail(email) {
+export function isEmail(email) {
   const regex = /\S+@\S+\.\S+/
   return regex.test(email)
 }
 
-function formatAddress(address) {
+export function formatAddress(address) {
   return `${address.street} ${address.zipCode} ${address.city} ${address.country}`
 }
 
-function formatEventClothes(clothes) {
+export function formatEventClothes(clothes) {
   let clothesDesc = ''
   if (clothes.whiteShirt !== undefined && clothes.whiteShirt) {
     if (clothesDesc.length > 0) {
@@ -173,21 +172,21 @@ function formatEventClothes(clothes) {
   return clothesDesc.toUpperCase()
 }
 
-function formatEventSummary(event) {
+export function formatEventSummary(event) {
   return `ANDY ${dateFormat(
     new Date(event.eventDate),
     'dd/MM/yyyy',
   )} ${event.booker.company.toUpperCase()}`
 }
 
-function formatTeam(team) {
+export function formatTeam(team) {
   const from = dateFormat(new Date(team.from), 'HH:mm')
   const to = dateFormat(new Date(team.to), 'HH:mm')
 
   return `${team.quantity} ${team.type} de ${from} à ${to}`
 }
 
-function formatTeamGoogleEvent(teams, forMail = false) {
+export function formatTeamGoogleEvent(teams, forMail = false) {
   const format = teams
     .map((team) => {
       const from = dateFormat(team.from, 'HH:mm')
@@ -257,14 +256,14 @@ function formatTeamGoogleEvent(teams, forMail = false) {
   return format
 }
 
-function formatEventStatus(status) {
+export function formatEventStatus(status) {
   if (status === null) return 'En attente'
   if (status) return 'Validé'
   if (!status) return 'Option'
   return 'Non défini'
 }
 
-function formatEventDescription(event) {
+export function formatEventDescription(event) {
   const html =
     `<div>` +
     `<strong>LIEU : </strong>${event.eventLocation.toUpperCase()}<br />` +
@@ -282,7 +281,7 @@ function formatEventDescription(event) {
   return html
 }
 
-function formatAttendeesDescription(event) {
+export function formatAttendeesDescription(event) {
   const html =
     `<div>` +
     `<strong>SOCIÉTÉ : </strong>${event.booker.company.toUpperCase()}<br />` +
@@ -302,7 +301,7 @@ function formatAttendeesDescription(event) {
   return html
 }
 
-function getEventTime(event) {
+export function getEventTime(event) {
   let minTime = ''
   let maxTime = ''
   const { eventDate } = event
@@ -329,6 +328,7 @@ function getEventTime(event) {
         maxTime = toTime
       }
     }
+    return true
   })
 
   const eventTime = {
@@ -339,7 +339,7 @@ function getEventTime(event) {
   return eventTime
 }
 
-function getUpdatedFields(source, newObj) {
+export function getUpdatedFields(source, newObj) {
   const differences = diff.diff(source, newObj)
   const updatedFields = differences.map((item) => {
     const obj = {}
@@ -401,7 +401,7 @@ function getUpdatedFields(source, newObj) {
   return result
 }
 
-function getEventAttendees(teams) {
+export function getEventAttendees(teams) {
   const attendees = []
 
   if (teams !== undefined && teams !== null && teams.length > 0) {
@@ -415,20 +415,22 @@ function getEventAttendees(teams) {
           if (member.staff !== undefined && member.staff !== null) {
             attendees.push({ email: member.staff.user.email })
           }
+          return true
         })
       }
+      return true
     })
   }
 
   return attendees
 }
 
-function getPublishEventLink(eventLink) {
+export function getPublishEventLink(eventLink) {
   const eid = eventLink.split('?eid=')[1]
   return `https://calendar.google.com/calendar/event?action=TEMPLATE&tmeid=${eid}&tmsrc=${process.env.GOOGLE_CALENDAR_ID}`
 }
 
-function sortTeamsByHour(teams) {
+export function sortTeamsByHour(teams) {
   teams.sort((t1, t2) => {
     const fromA = new Date(t1.from)
     const timeA = new Date()
@@ -440,28 +442,4 @@ function sortTeamsByHour(teams) {
     timeB.setMinutes(getMinutes(fromB))
     return compareAsc(timeA, timeB)
   })
-}
-
-module.exports = {
-  formatAddress,
-  formatEventSummary,
-  formatEventDescription,
-  formatEventStatus,
-  getEventTime,
-  getUpdatedFields,
-  formatEventClothes,
-  formatTeam,
-  dateFormat,
-  isAdmin,
-  getEventAttendees,
-  formatAttendeesDescription,
-  getPublishEventLink,
-  frLocale,
-  isEmail,
-  getAdminData,
-  getBookerData,
-  getStaffData,
-  formatBookerData,
-  formatStaffData,
-  sortTeamsByHour,
 }

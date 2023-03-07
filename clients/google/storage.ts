@@ -62,5 +62,3 @@ export const deleteFromStore = async (fileName) => {
   }
   return false
 }
-
-module.exports = { uploadToStore, deleteFromStore }

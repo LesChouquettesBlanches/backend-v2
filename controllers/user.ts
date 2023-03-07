@@ -1,3 +1,6 @@
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-prototype-builtins */
 import { Request, Response } from 'express'
 import endOfDay from 'date-fns/endOfDay'
 import startOfDay from 'date-fns/startOfDay'
@@ -121,6 +124,7 @@ const updatePassword = (req: Request, res: Response) => {
             .then(() => res.status(201).json(true))
             .catch((error) => res.status(400).json({ error }))
         })
+        return true
       })
     })
     .catch((error) => {
@@ -233,7 +237,7 @@ const get = (req: Request, res: Response) => {
         return res.status(401).json({ error: 'Utilisateur non trouvé !' })
       }
 
-      res.status(200).json(user)
+      return res.status(200).json(user)
     })
     .catch((error) => res.status(500).json({ error }))
 }

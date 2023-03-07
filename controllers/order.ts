@@ -1,3 +1,6 @@
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-prototype-builtins */
+/* eslint-disable no-underscore-dangle */
 import { Request, Response } from 'express'
 import endOfDay from 'date-fns/endOfDay'
 import startOfDay from 'date-fns/startOfDay'
@@ -109,45 +112,47 @@ const setStatus = (req: Request, res: Response) => {
       populate: { path: 'user', select: 'firstname lastname phone email' },
     })
     .then(async (order) => {
-      if (
-        (order.status && req.body.status) ||
-        (!order.status && !req.body.status)
-      ) {
+      if (order !== null) {
+        if (
+          (order.status && req.body.status) ||
+          (!order.status && !req.body.status)
+        ) {
+          sortTeamsByHour(order.teams)
+          res.status(200).json(order)
+        }
+
+        if (!order.status && req.body.status) {
+          const googleEvent = await GoogleCalendar.createEvent(order)
+          order.googleEventId = googleEvent.data.id
+
+          const mailOptions = {
+            from: process.env.SMTP_SUPPORT_EMAIL,
+            subject: formatEventSummary(order),
+            template: 'staff/order/new',
+            context: {
+              order: order.toJSON(),
+              eventLink: googleEvent.data.htmlLink,
+            },
+          }
+
+          const attendees = getEventAttendees(order.teams)
+          if (attendees.length > 0) {
+            attendees.map(async (staff) => {
+              mailOptions.to = staff.email
+              await mailerService(mailOptions)
+            })
+          }
+        } else if (order.status && !req.body.status) {
+          await GoogleCalendar.deleteEvent(order)
+          order.googleEventId = null
+        }
+
+        order.status = req.body.status
+        order.markModified('googleEventId')
+        order.markModified('status')
+        order.save()
         sortTeamsByHour(order.teams)
-        res.status(200).json(order)
       }
-
-      if (!order.status && req.body.status) {
-        const googleEvent = await GoogleCalendar.createEvent(order)
-        order.googleEventId = googleEvent.data.id
-
-        const mailOptions = {
-          from: process.env.SMTP_SUPPORT_EMAIL,
-          subject: formatEventSummary(order),
-          template: 'staff/order/new',
-          context: {
-            order: order.toJSON(),
-            eventLink: googleEvent.data.htmlLink,
-          },
-        }
-
-        const attendees = getEventAttendees(order.teams)
-        if (attendees.length > 0) {
-          attendees.map(async (staff) => {
-            mailOptions.to = staff.email
-            await mailerService(mailOptions)
-          })
-        }
-      } else if (order.status && !req.body.status) {
-        await GoogleCalendar.deleteEvent(order)
-        order.googleEventId = null
-      }
-
-      order.status = req.body.status
-      order.markModified('googleEventId')
-      order.markModified('status')
-      order.save()
-      sortTeamsByHour(order.teams)
       res.status(200).json(order)
     })
     .catch((error) => {
@@ -164,10 +169,12 @@ const setArchived = (req: Request, res: Response) => {
     _id: req.params.id,
   })
     .then(async (order) => {
-      order.archived = req.body.archived
-      order.markModified('archived')
-      order.save()
-      sortTeamsByHour(order.teams)
+      if (order !== null) {
+        order.archived = req.body.archived
+        order.markModified('archived')
+        order.save()
+        sortTeamsByHour(order.teams)
+      }
       res.status(200).json(order)
     })
     .catch((error) => {
@@ -401,6 +408,7 @@ const updateTeamMembers = (req: Request, res: Response) => {
           team.markModified('members')
           order.save()
         }
+        return true
       })
       await order.populate({
         path: 'teams.members.staff',

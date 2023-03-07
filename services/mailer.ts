@@ -63,14 +63,13 @@ transporter.use(
         fillList(team) {
           let count = 0
           let list = ''
-          team.members.forEach(
-            (member) =>
-              (member.staff === undefined || member.staff === null) && count++,
-          )
+          team.members.forEach((member) => {
+            if (member.staff === undefined || member.staff === null) count += 1
+          })
 
           while (count < team.quantity) {
             list += `<li></li>`
-            count++
+            count += 1
           }
 
           return list
@@ -99,7 +98,7 @@ transporter.use(
 )
 
 const sendEmail = async (mailOptions) => {
-  transporter.sendMail(mailOptions, (err, info) => {
+  transporter.sendMail(mailOptions, (err) => {
     if (err) {
       console.log(`mailerror: ${err}`)
       return false
@@ -108,4 +107,4 @@ const sendEmail = async (mailOptions) => {
   })
 }
 
-module.exports = sendEmail
+export default sendEmail

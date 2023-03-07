@@ -1,5 +1,5 @@
-const dateFormat = require('date-fns/format')
-const utils = require('../../../../utils/utils')
+import dateFormat from 'date-fns/format'
+import { formatEventClothes, formatTeam } from '../../../../utils/utils'
 
 function adminNotice(notice) {
   if (notice !== undefined && notice !== null && notice !== '') {
@@ -70,11 +70,11 @@ function formatValue(field, value) {
       if (!field) format = 'Option'
       break
     case 'clothes':
-      format = utils.formatEventClothes(value)
+      format = formatEventClothes(value)
       break
     case 'teams':
     case 'newMember':
-      format = utils.formatTeam(value)
+      format = formatTeam(value)
       break
     default:
       format = value
@@ -124,4 +124,4 @@ const updateOrder = (data) =>
 			</p>
 		</div>
 	`
-module.exports = updateOrder
+export default updateOrder

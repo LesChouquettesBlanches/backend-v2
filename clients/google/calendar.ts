@@ -17,7 +17,7 @@ const auth = new google.auth.GoogleAuth({
 
 const calendar = google.calendar({ version: 'v3', auth })
 
-async function createEvent(event) {
+export async function createEvent(event) {
   const googleEventResource = {
     summary: formatEventSummary(event),
     description: formatEventDescription(event),
@@ -30,7 +30,7 @@ async function createEvent(event) {
     },
   }
   try {
-    const gEvent = await calendar.events.insert({
+    const gEvent = calendar.events.insert({
       calendarId: process.env.GOOGLE_CALENDAR_ID,
       resource: googleEventResource,
     })
@@ -41,7 +41,7 @@ async function createEvent(event) {
   }
 }
 
-async function updateEvent(event) {
+export async function updateEvent(event) {
   const googleEventResource = {
     summary: formatEventSummary(event),
     description: formatEventDescription(event),
@@ -54,7 +54,7 @@ async function updateEvent(event) {
     },
   }
 
-  const gEvent = await calendar.events.patch({
+  const gEvent = calendar.events.patch({
     calendarId: process.env.GOOGLE_CALENDAR_ID,
     eventId: event.googleEventId,
     resource: googleEventResource,
@@ -63,7 +63,7 @@ async function updateEvent(event) {
   return gEvent.data
 }
 
-async function deleteEvent(event) {
+export async function deleteEvent(event) {
   try {
     const gEvent = await calendar.events.delete({
       calendarId: process.env.GOOGLE_CALENDAR_ID,
@@ -75,5 +75,3 @@ async function deleteEvent(event) {
     return 'already deleted'
   }
 }
-
-module.exports = { createEvent, deleteEvent, updateEvent }

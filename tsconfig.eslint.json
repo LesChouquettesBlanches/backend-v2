@@ -1,4 +1,7 @@
 {
-    "extends": "./tsconfig.json",
-    "include": ["./**/*.ts", "./**/*.js", "./.*.js"]
+  "extends": "./tsconfig.json",
+  "include": ["./**/*.ts", "./**/*.js", "./.*.js"],
+  "rules": {
+    "no-underscore-dangle": "off"
   }
+}
