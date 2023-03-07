@@ -34,7 +34,7 @@ async function createEvent(event) {
       calendarId: process.env.GOOGLE_CALENDAR_ID,
       resource: googleEventResource,
     })
-    return gEvent
+    return await gEvent
   } catch (e) {
     console.log(e)
     return e

@@ -1,5 +1,5 @@
 import express from 'express'
-import { userAuth, adminAuth } from '../middleware/authentication'
+import { userAuth, adminAuth } from '../middlewares/authentication'
 
 import staff from '../controllers/staff'
 

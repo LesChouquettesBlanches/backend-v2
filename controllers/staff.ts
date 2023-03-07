@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { uploadToStore, deleteFromStore } from '../clients/google/storage'
-import processFile from '../middleware/upload'
+import processFile from '../middlewares/upload'
 import Staff from '../models/staff'
 import User from '../models/user'
 
