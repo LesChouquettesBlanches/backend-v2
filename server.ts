@@ -16,6 +16,9 @@ const normalizePort = (val: string) => {
 const port = normalizePort(process.env.PORT || '4000')
 app.set('port', port)
 
+const server = http.createServer(app)
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const errorHandler = (error: any) => {
   if (error.syscall !== 'listen') {
     throw error
@@ -35,8 +38,6 @@ const errorHandler = (error: any) => {
       throw error
   }
 }
-
-const server = http.createServer(app)
 
 server.on('error', errorHandler)
 server.on('listening', () => {

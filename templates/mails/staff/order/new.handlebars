@@ -1,0 +1,29 @@
+<div style="margin: 10px;">
+    <h1>{{dateFormat order.eventDate 'EEEE dd MMMM yyyy'}}</h1>
+    <a target="_blank" href="{{getEventLink eventLink}}">
+        <img border="0" src="https://www.google.com/calendar/images/ext/gc_button1_fr.gif">
+    </a>
+    <p><strong>SOCIÉTÉ : </strong>{{upperCase order.booker.company}}</p>
+    <p><strong>LIEU : </strong>{{upperCase order.eventLocation}}</p>
+    <p><strong>ADRESSE : </strong>{{formatAddress order.eventAddress}}</p>
+    <p style="font-size: 10px;"><strong>COMMERCIAL : </strong>{{lowerCase order.booker.user.firstname}} {{lowerCase order.booker.user.lastname}}</p>
+    <p><strong>ETAT / NB DE PAX : </strong>{{formatEventStatus order.eventStatus}} / {{order.guestsCount}}</p>
+    <p><strong>CLIENT / ÉVÈNEMENT : </strong>{{lowerCase order.customerName}}</p>
+    <p><strong>TENUE : </strong>{{formatClothes order.clothes.[0]}}</p>
+    {{#if order.eventNotice}}
+        <p><strong>INFO SUP : </strong>{{upperCase order.eventNotice}}</p>
+    {{/if}}
+    <hr />
+    {{#each order.teams as | team |}}
+        <p><strong>{{quantity}} {{type}} DE {{dateFormat from 'HH:ii'}} À {{dateFormat to 'HH:ii'}}{{#if notice}} ({{notice}}){{/if}}</strong></p>
+        <ol>
+            {{#if members}}
+                {{#each members}}
+                    <li>{{fillStaff staff}}</li>
+                {{/each}}
+            {{else}}
+                {{{fillList team}}}
+            {{/if}}
+        </ol>
+    {{/each}}
+</div>

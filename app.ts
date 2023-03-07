@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 require('dotenv').config()
 import express from 'express'
 import mongoose from 'mongoose'
@@ -16,6 +17,7 @@ const bookerRoutes = require('./routes/booker')
 const staffRoutes = require('./routes/staff')*/
 
 mongoose
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   .connect(process.env.DATABASE_URI!)
   .then(() => console.log('Connexion à MongoDB réussie !!'))
   .catch((e) => console.log(e, 'Connexion à MongoDB échouée !'))
