@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 
-const staffSchema = mongoose.Schema(
+const staffSchema = new mongoose.Schema(
   {
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     birth: { type: Object, default: { date: null, location: '' } },
@@ -70,4 +70,4 @@ const staffSchema = mongoose.Schema(
   { timestamps: true },
 )
 
-module.exports = mongoose.model('Staff', staffSchema)
+export default mongoose.model('Staff', staffSchema)

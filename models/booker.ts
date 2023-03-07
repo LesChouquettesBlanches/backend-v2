@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 
-const bookerSchema = mongoose.Schema(
+const bookerSchema = new mongoose.Schema(
   {
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     defaultClothes: [
@@ -23,4 +23,4 @@ const bookerSchema = mongoose.Schema(
   { timestamps: true },
 )
 
-module.exports = mongoose.model('Booker', bookerSchema)
+export default mongoose.model('Booker', bookerSchema)

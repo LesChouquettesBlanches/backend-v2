@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 
-const orderSchema = mongoose.Schema(
+const orderSchema = new mongoose.Schema(
   {
     booker: { type: mongoose.Schema.Types.ObjectId, ref: 'Booker' },
     eventDate: { type: Date, required: true },
@@ -76,4 +76,4 @@ const orderSchema = mongoose.Schema(
   { timestamps: true },
 )
 
-module.exports = mongoose.model('Order', orderSchema)
+export default mongoose.model('Order', orderSchema)
