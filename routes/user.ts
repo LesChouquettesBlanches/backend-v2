@@ -1,9 +1,9 @@
-const express = require('express')
+import express from 'express'
+import { userAuth, adminAuth } from '../middleware/authentication'
+
+import user from '../controllers/user'
 
 const router = express.Router()
-const { userAuth, adminAuth } = require('../middleware/authentication')
-
-const user = require('../controllers/user')
 
 router.get('/list', adminAuth, user.listUsers)
 router.post('/profile', userAuth, user.profile)

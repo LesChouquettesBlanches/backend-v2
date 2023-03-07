@@ -1,12 +1,12 @@
-const { v4: uuid } = require('uuid')
-const { Storage } = require('@google-cloud/storage')
+import { v4 as uuid } from 'uuid'
+import { Storage } from '@google-cloud/storage'
 
-const { format } = require('util')
+import { format } from 'util'
 
 const storage = new Storage({ keyFilename: process.env.GOOGLE_APP_CREDENTIALS })
 const bucket = storage.bucket(process.env.GOOGLE_STORAGE_BUCKET_NAME)
 
-const uploadToStore = async (folder, file) => {
+export const uploadToStore = async (folder, file) => {
   try {
     const uniqueName = `${uuid()}.${file.originalname.split('.').pop()}`
     const fileName = folder + uniqueName
@@ -55,7 +55,7 @@ const uploadToStore = async (folder, file) => {
   }
 }
 
-const deleteFromStore = async (fileName) => {
+export const deleteFromStore = async (fileName) => {
   if (fileName !== undefined && fileName.length > 0) {
     await bucket.file(fileName).delete()
     return true

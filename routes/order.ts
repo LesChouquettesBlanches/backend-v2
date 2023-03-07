@@ -1,9 +1,9 @@
-const express = require('express')
+import express from 'express'
+import { userAuth, adminAuth } from '../middleware/authentication'
+
+import order from '../controllers/order'
 
 const router = express.Router()
-const { userAuth, adminAuth } = require('../middleware/authentication')
-
-const order = require('../controllers/order')
 
 router.get('/list', adminAuth, order.listOrders)
 router.post('/list', adminAuth, order.listOrders)

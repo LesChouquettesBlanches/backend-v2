@@ -1,14 +1,14 @@
-const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
-const User = require('../models/user')
-const Booker = require('../models/booker')
-const Staff = require('../models/staff')
-const {
+import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
+import User from '../models/user'
+import Booker from '../models/booker'
+import Staff from '../models/staff'
+import {
   isEmail,
   getBookerData,
   getStaffData,
   getAdminData,
-} = require('../utils/utils')
+} from '../utils/utils'
 
 exports.signup = (req, res) => {
   bcrypt

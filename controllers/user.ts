@@ -1,18 +1,17 @@
-/* eslint-disable no-param-reassign */
-const endOfDay = require('date-fns/endOfDay')
-const startOfDay = require('date-fns/startOfDay')
-const bcrypt = require('bcrypt')
-const User = require('../models/user')
-const Staff = require('../models/staff')
-const Booker = require('../models/booker')
-const Order = require('../models/order')
-const {
+import endOfDay from 'date-fns/endOfDay'
+import startOfDay from 'date-fns/startOfDay'
+import bcrypt from 'bcrypt'
+import User from '../models/user'
+import Staff from '../models/staff'
+import Booker from '../models/booker'
+import Order from '../models/order'
+import {
   getAdminData,
   getBookerData,
   getStaffData,
   formatBookerData,
   formatStaffData,
-} = require('../utils/utils')
+} from '../utils/utils'
 
 exports.profile = (req, res) => {
   User.findOne({ _id: req.body.userId })

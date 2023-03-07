@@ -1,7 +1,8 @@
-const jwt = require('jsonwebtoken')
-const User = require('../models/user')
+import { Request, Response, NextFunction } from 'express'
+import jwt from 'jsonwebtoken'
+import User from '../models/user'
 
-async function userAuth(req, res, next) {
+async function userAuth(req: Request, res: Response, next: NextFunction) {
   try {
     const token = req.headers.authorization.split(' ')[1]
     const decodedToken = jwt.verify(token, process.env.APP_SECRET_TOKEN)
@@ -21,7 +22,7 @@ async function userAuth(req, res, next) {
   }
 }
 
-async function adminAuth(req, res, next) {
+async function adminAuth(req: Request, res: Response, next: NextFunction) {
   try {
     const token = req.headers.authorization.split(' ')[1]
     const decodedToken = jwt.verify(token, process.env.APP_SECRET_TOKEN)

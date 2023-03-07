@@ -1,7 +1,7 @@
-const { uploadToStore, deleteFromStore } = require('../clients/google/storage')
-const processFile = require('../middleware/upload')
-const Staff = require('../models/staff')
-const User = require('../models/user')
+import { uploadToStore, deleteFromStore } from '../clients/google/storage'
+import processFile from '../middleware/upload'
+import Staff from '../models/staff'
+import User from '../models/user'
 
 async function deleteDocument(document, userId) {
   const staff = await Staff.findOne({ user: userId })
@@ -121,7 +121,7 @@ exports.updateByid = (req, res) => {
       res.status(201).json(staff)
     })
     .catch((error) => {
-      console.log('Update employé error - ' + error)
+      console.log(`Update employé error - ${error}`)
       res.status(400).json({
         success: false,
         error: 'Une erreur est survenue ! veuillez réessayer',

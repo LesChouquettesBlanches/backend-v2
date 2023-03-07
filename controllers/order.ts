@@ -1,22 +1,20 @@
-/* eslint-disable no-prototype-builtins */
-/* eslint-disable no-param-reassign */
-const endOfDay = require('date-fns/endOfDay')
-const startOfDay = require('date-fns/startOfDay')
-const dateFormat = require('date-fns/format')
-const Order = require('../models/order')
-const Booker = require('../models/booker')
-const GoogleCalendar = require('../clients/google/calendar')
+import endOfDay from 'date-fns/endOfDay'
+import startOfDay from 'date-fns/startOfDay'
+import dateFormat from 'date-fns/format'
+import Order from '../models/order'
+import Booker from '../models/booker'
+import GoogleCalendar from '../clients/google/calendar'
 
-const {
+import {
   getUpdatedFields,
   isAdmin,
   formatEventSummary,
   getEventAttendees,
   sortTeamsByHour,
-} = require('../utils/utils')
-const mailerService = require('../services/mailer')
-const newOrderTemplate = require('../templates/mails/admin/order/new')
-const updateOrderTemplate = require('../templates/mails/admin/order/update')
+} from '../utils/utils'
+import mailerService from '../services/mailer'
+import newOrderTemplate from '../templates/mails/admin/order/new'
+import updateOrderTemplate from '../templates/mails/admin/order/update'
 
 exports.createOrder = async (req, res) => {
   const booker = await Booker.findOne({ user: req.body.userId }).populate(

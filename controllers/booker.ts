@@ -1,4 +1,4 @@
-const Booker = require('../models/booker')
+import Booker from '../models/booker'
 
 exports.create = (req, res) => {
   const newBooker = new Booker({
@@ -89,7 +89,7 @@ exports.updateByid = (req, res) => {
       res.status(201).json(booker)
     })
     .catch((error) => {
-      console.log('Update booker error - ' + error)
+      console.log(`Update booker error - ${  error}`)
       res.status(400).json({
         success: false,
         error: 'Une erreur est survenue ! veuillez réessayer',

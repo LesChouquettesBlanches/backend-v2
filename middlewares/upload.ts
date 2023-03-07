@@ -1,5 +1,5 @@
-const util = require('util')
-const Multer = require('multer')
+import util from 'util'
+import Multer from 'multer'
 
 const maxSize = 10 * 1024 * 1024
 
@@ -10,4 +10,4 @@ const processFile = Multer({
 
 const processFileMiddleware = util.promisify(processFile)
 
-module.exports = processFileMiddleware
+export default processFileMiddleware

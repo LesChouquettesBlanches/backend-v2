@@ -1,11 +1,11 @@
 /* eslint-disable no-plusplus */
-const diff = require('deep-diff')
-const dateFormat = require('date-fns/format')
-const { getHours, getMinutes, compareAsc } = require('date-fns')
-const frLocale = require('date-fns/locale/fr')
-const User = require('../models/user')
-const Booker = require('../models/booker')
-const Staff = require('../models/staff')
+import diff from 'deep-diff'
+import dateFormat from 'date-fns/format'
+import { getHours, getMinutes, compareAsc } from 'date-fns'
+import frLocale from 'date-fns/locale/fr'
+import User from '../models/user'
+import Booker from '../models/booker'
+import Staff from '../models/staff'
 
 async function isAdmin(userId) {
   const result = await User.findById(userId)

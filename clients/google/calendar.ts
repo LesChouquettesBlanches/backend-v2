@@ -1,11 +1,11 @@
-const { google } = require('googleapis')
+import { google } from 'googleapis'
 
-const {
+import {
   formatAddress,
   formatEventSummary,
   formatEventDescription,
   dateFormat,
-} = require('../../utils/utils')
+} from '../../utils/utils'
 
 const auth = new google.auth.GoogleAuth({
   keyFile: process.env.GOOGLE_APP_CREDENTIALS,

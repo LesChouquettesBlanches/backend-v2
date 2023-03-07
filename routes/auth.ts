@@ -1,9 +1,8 @@
-const express = require('express')
+import express from 'express'
+import auth from '../controllers/auth'
+import { userAuth } from '../middleware/authentication'
 
 const router = express.Router()
-
-const auth = require('../controllers/auth')
-const { userAuth } = require('../middleware/authentication')
 
 router.post('/signup', auth.signup)
 router.post('/login', auth.login)

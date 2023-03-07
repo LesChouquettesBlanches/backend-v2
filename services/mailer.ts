@@ -1,15 +1,15 @@
-const express = require('express')
-const nodemailer = require('nodemailer')
-const hbs = require('nodemailer-express-handlebars')
-const path = require('path')
-const {
+import express from 'express'
+import nodemailer from 'nodemailer'
+import hbs from 'nodemailer-express-handlebars'
+import path from 'path'
+import {
   dateFormat,
   frLocale,
   getPublishEventLink,
   formatAddress,
   formatEventStatus,
   formatEventClothes,
-} = require('../utils/utils')
+} from '../utils/utils'
 
 const viewPath = path.resolve('./templates/mails/')
 const partialsPath = path.resolve('./templates/mails/partials')
