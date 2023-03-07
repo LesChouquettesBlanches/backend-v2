@@ -1,3 +1,4 @@
+import { Request, Response } from 'express'
 import { uploadToStore, deleteFromStore } from '../clients/google/storage'
 import processFile from '../middleware/upload'
 import Staff from '../models/staff'
@@ -69,7 +70,7 @@ async function saveDocument(type, userId, document) {
   }
 }
 
-exports.create = (req, res) => {
+const create = (req: Request, res: Response) => {
   const newStaff = new Staff({
     user: req.body.userId,
     birthdate: req.body.birthdate,
@@ -97,7 +98,7 @@ exports.create = (req, res) => {
     })
 }
 
-exports.updateByid = (req, res) => {
+const updateByid = (req: Request, res: Response) => {
   Staff.findByIdAndUpdate(
     req.params.id,
     {
@@ -129,7 +130,7 @@ exports.updateByid = (req, res) => {
     })
 }
 
-exports.uploadDocument = async (req, res) => {
+const uploadDocument = async (req: Request, res: Response) => {
   await processFile(req, res)
   if (!req.file) {
     res.status(400).json({ success: false, error: 'File not found' })
@@ -161,7 +162,7 @@ exports.uploadDocument = async (req, res) => {
   res.status(201).json({ success: true, publicUrl: upload.publicUrl })
 }
 
-exports.list = (req, res) => {
+const list = (req: Request, res: Response) => {
   const bodyFilters = { ...req.body.filters }
 
   Staff.find()
@@ -179,7 +180,7 @@ exports.list = (req, res) => {
     .catch((error) => res.status(500).json({ error }))
 }
 
-exports.get = (req, res) => {
+const get = (req: Request, res: Response) => {
   Staff.findOne({
     _id: req.params.id,
   })
@@ -195,7 +196,7 @@ exports.get = (req, res) => {
     })
 }
 
-exports.uploadForStaff = async (req, res) => {
+const uploadForStaff = async (req: Request, res: Response) => {
   await processFile(req, res)
   if (!req.file) {
     res.status(400).json({ success: false, error: 'File not found' })
@@ -226,3 +227,7 @@ exports.uploadForStaff = async (req, res) => {
 
   res.status(201).json({ success: true, publicUrl: upload.publicUrl })
 }
+
+const staff = { create, get, list, updateByid, uploadForStaff, uploadDocument }
+
+export default staff

@@ -16,4 +16,4 @@ router.put('/:id/update', adminAuth, user.updateById)
 router.delete('/:id/delete', adminAuth, user.deleteById)
 router.put('/:id/status', adminAuth, user.setIsActive)
 
-module.exports = router
+export default router

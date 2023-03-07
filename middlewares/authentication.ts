@@ -44,4 +44,4 @@ async function adminAuth(req: Request, res: Response, next: NextFunction) {
   }
 }
 
-module.exports = { userAuth, adminAuth }
+export { userAuth, adminAuth }

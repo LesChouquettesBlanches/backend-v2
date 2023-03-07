@@ -11,4 +11,4 @@ router.put('/update', adminAuth, booker.update)
 router.get('/:id', adminAuth, booker.get)
 router.put('/:id/update', adminAuth, booker.updateByid)
 
-module.exports = router
+export default router

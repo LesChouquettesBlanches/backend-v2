@@ -1,6 +1,7 @@
+import { Request, Response } from 'express'
 import Booker from '../models/booker'
 
-exports.create = (req, res) => {
+const create = (req: Request, res: Response) => {
   const newBooker = new Booker({
     user: req.body.userId,
     defaultClothes: req.body.defaultClothes,
@@ -23,7 +24,7 @@ exports.create = (req, res) => {
     })
 }
 
-exports.update = (req, res) => {
+const update = (req: Request, res: Response) => {
   const booker = {
     defaultClothes: req.body.defaultClothes,
     company: req.body.company,
@@ -47,7 +48,7 @@ exports.update = (req, res) => {
     })
 }
 
-exports.list = (req, res) => {
+const list = (req: Request, res: Response) => {
   Booker.find()
     .populate('user')
     .then((bookers) => {
@@ -56,7 +57,7 @@ exports.list = (req, res) => {
     .catch((error) => res.status(500).json({ success: false, error }))
 }
 
-exports.get = (req, res) => {
+const get = (req: Request, res: Response) => {
   Booker.findOne({
     _id: req.params.id,
   })
@@ -72,7 +73,7 @@ exports.get = (req, res) => {
     })
 }
 
-exports.updateByid = (req, res) => {
+const updateByid = (req: Request, res: Response) => {
   Booker.findByIdAndUpdate(req.params.id, {
     $set: {
       company: req.body.company,
@@ -89,10 +90,14 @@ exports.updateByid = (req, res) => {
       res.status(201).json(booker)
     })
     .catch((error) => {
-      console.log(`Update booker error - ${  error}`)
+      console.log(`Update booker error - ${error}`)
       res.status(400).json({
         success: false,
         error: 'Une erreur est survenue ! veuillez réessayer',
       })
     })
 }
+
+const booker = { create, update, list, get, updateByid }
+
+export default booker

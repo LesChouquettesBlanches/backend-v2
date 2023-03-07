@@ -1,3 +1,4 @@
+import { Request, Response } from 'express'
 import endOfDay from 'date-fns/endOfDay'
 import startOfDay from 'date-fns/startOfDay'
 import bcrypt from 'bcrypt'
@@ -13,7 +14,7 @@ import {
   formatStaffData,
 } from '../utils/utils'
 
-exports.profile = (req, res) => {
+const profile = (req: Request, res: Response) => {
   User.findOne({ _id: req.body.userId })
     .then(async (user) => {
       if (!user) {
@@ -37,7 +38,7 @@ exports.profile = (req, res) => {
     })
 }
 
-exports.update = (req, res) => {
+const update = (req: Request, res: Response) => {
   const updatedUser = {
     login: req.body.login,
     email: req.body.email,
@@ -101,7 +102,7 @@ exports.update = (req, res) => {
     })
 }
 
-exports.updatePassword = (req, res) => {
+const updatePassword = (req: Request, res: Response) => {
   User.findOne({ _id: req.body.userId })
     .then((user) => {
       if (!user) {
@@ -130,7 +131,7 @@ exports.updatePassword = (req, res) => {
     })
 }
 
-exports.ordersList = async (req, res) => {
+const getOrders = async (req: Request, res: Response) => {
   const bodyFilters = { ...req.body.filters }
   const bodySortBy = { ...req.body.sortBy }
 
@@ -183,7 +184,7 @@ exports.ordersList = async (req, res) => {
     .catch((error) => res.status(500).json({ error }))
 }
 
-exports.order = (req, res) => {
+const getOrder = (req: Request, res: Response) => {
   Order.findOne({ _id: req.params.id })
     .populate({
       path: 'booker',
@@ -200,7 +201,7 @@ exports.order = (req, res) => {
     .catch((error) => res.status(500).json({ error }))
 }
 
-exports.updateOrder = (req, res) => {
+const updateOrder = (req: Request, res: Response) => {
   Order.findOne({ _id: req.params.id })
     .populate({
       path: 'booker',
@@ -217,7 +218,7 @@ exports.updateOrder = (req, res) => {
     .catch((error) => res.status(500).json({ error }))
 }
 
-exports.listUsers = (req, res) => {
+const list = (req: Request, res: Response) => {
   User.find()
     .then((users) => {
       res.status(200).json(users)
@@ -225,7 +226,7 @@ exports.listUsers = (req, res) => {
     .catch((error) => res.status(500).json({ error }))
 }
 
-exports.findById = (req, res) => {
+const get = (req: Request, res: Response) => {
   User.findOne({ _id: req.params.id })
     .then((user) => {
       if (!user) {
@@ -237,7 +238,7 @@ exports.findById = (req, res) => {
     .catch((error) => res.status(500).json({ error }))
 }
 
-exports.updateById = (req, res) => {
+const updateById = (req: Request, res: Response) => {
   const updatedUser = {
     login: req.body.login,
     email: req.body.email,
@@ -290,7 +291,7 @@ exports.updateById = (req, res) => {
     })
 }
 
-exports.deleteById = async (req, res) => {
+const remove = async (req: Request, res: Response) => {
   User.findOne({ _id: req.params.id })
     .then(async (user) => {
       if (!user) {
@@ -321,7 +322,7 @@ exports.deleteById = async (req, res) => {
     })
 }
 
-exports.setIsActive = (req, res) => {
+const setIsActive = (req: Request, res: Response) => {
   User.findByIdAndUpdate(
     {
       _id: req.params.id,
@@ -340,3 +341,19 @@ exports.setIsActive = (req, res) => {
       })
     })
 }
+
+const user = {
+  profile,
+  update,
+  updatePassword,
+  getOrders,
+  getOrder,
+  updateOrder,
+  list,
+  get,
+  updateById,
+  remove,
+  setIsActive,
+}
+
+export default user

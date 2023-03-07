@@ -1,8 +1,8 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 import express from 'express'
 import mongoose from 'mongoose'
 import cors from 'cors'
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 require('dotenv').config()
 
 const app = express()

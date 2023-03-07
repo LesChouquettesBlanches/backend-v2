@@ -1,3 +1,4 @@
+import { Request, Response } from 'express'
 import endOfDay from 'date-fns/endOfDay'
 import startOfDay from 'date-fns/startOfDay'
 import dateFormat from 'date-fns/format'
@@ -16,7 +17,7 @@ import mailerService from '../services/mailer'
 import newOrderTemplate from '../templates/mails/admin/order/new'
 import updateOrderTemplate from '../templates/mails/admin/order/update'
 
-exports.createOrder = async (req, res) => {
+const create = async (req: Request, res: Response) => {
   const booker = await Booker.findOne({ user: req.body.userId }).populate(
     'user',
     'firstname lastname email',
@@ -70,7 +71,7 @@ exports.createOrder = async (req, res) => {
     })
 }
 
-exports.getOrder = (req, res) => {
+const get = (req: Request, res: Response) => {
   Order.findOne({
     _id: req.params.id,
   })
@@ -94,7 +95,7 @@ exports.getOrder = (req, res) => {
     })
 }
 
-exports.setOrderStatus = (req, res) => {
+const setStatus = (req: Request, res: Response) => {
   Order.findOne({
     _id: req.params.id,
   })
@@ -158,7 +159,7 @@ exports.setOrderStatus = (req, res) => {
     })
 }
 
-exports.setArchived = (req, res) => {
+const setArchived = (req: Request, res: Response) => {
   Order.findOne({
     _id: req.params.id,
   })
@@ -178,7 +179,7 @@ exports.setArchived = (req, res) => {
     })
 }
 
-exports.updateOrder = (req, res) => {
+const update = (req: Request, res: Response) => {
   const order = {
     eventDate: req.body.eventDate,
     eventStatus: req.body.eventStatus,
@@ -253,7 +254,7 @@ exports.updateOrder = (req, res) => {
     })
 }
 
-exports.deleteOrder = (req, res) => {
+const remove = (req: Request, res: Response) => {
   Order.findOne({ _id: req.params.id }).then(async (order) => {
     if (!order) {
       res.status(404).json({
@@ -280,7 +281,7 @@ exports.deleteOrder = (req, res) => {
   })
 }
 
-exports.listOrders = (req, res) => {
+const list = (req: Request, res: Response) => {
   const bodyFilters = { ...req.body.filters }
   const bodySortBy = { ...req.body.sortBy }
 
@@ -362,7 +363,7 @@ exports.listOrders = (req, res) => {
     .catch((error) => res.status(500).json({ error }))
 }
 
-exports.updateOrderTeams = (req, res) => {
+const updateTeams = (req: Request, res: Response) => {
   Order.findByIdAndUpdate(
     { _id: req.params.id },
     { teams: req.body.teams },
@@ -380,7 +381,7 @@ exports.updateOrderTeams = (req, res) => {
     })
 }
 
-exports.updateOrderTeamMembers = (req, res) => {
+const updateTeamMembers = (req: Request, res: Response) => {
   Order.findOne({
     _id: req.params.id,
   })
@@ -416,3 +417,17 @@ exports.updateOrderTeamMembers = (req, res) => {
       })
     })
 }
+
+const order = {
+  create,
+  update,
+  remove,
+  list,
+  updateTeams,
+  updateTeamMembers,
+  get,
+  setArchived,
+  setStatus,
+}
+
+export default order

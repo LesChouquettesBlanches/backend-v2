@@ -1,3 +1,4 @@
+import { Request, Response } from 'express'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import User from '../models/user'
@@ -10,7 +11,7 @@ import {
   getAdminData,
 } from '../utils/utils'
 
-exports.signup = (req, res) => {
+const signup = (req: Request, res: Response) => {
   bcrypt
     .hash(req.body.password, 10)
     .then((hash) => {
@@ -47,7 +48,7 @@ exports.signup = (req, res) => {
     .catch((error) => res.status(500).json({ error }))
 }
 
-exports.login = (req, res) => {
+const login = (req: Request, res: Response) => {
   const login = isEmail(req.body.login)
     ? { email: req.body.login }
     : { login: req.body.login }
@@ -88,6 +89,10 @@ exports.login = (req, res) => {
     .catch((error) => res.status(500).json({ error }))
 }
 
-exports.tokenVerify = (req, res) => {
+const tokenVerify = (req: Request, res: Response) => {
   res.status(200).json(true)
 }
+
+const auth = { login, signup, tokenVerify }
+
+export default auth

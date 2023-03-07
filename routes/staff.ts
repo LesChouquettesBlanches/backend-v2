@@ -12,4 +12,4 @@ router.get('/:id', adminAuth, staff.get)
 router.post('/:id/upload/:document', adminAuth, staff.uploadForStaff)
 router.put('/:id/update', adminAuth, staff.updateByid)
 
-module.exports = router
+export default router
